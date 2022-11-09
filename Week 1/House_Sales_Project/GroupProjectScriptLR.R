@@ -15,7 +15,53 @@ list(data)
 
 install.packages("dplyr")
 
+?pairs()
 
 
+str(data)
+
+# I am going to extract just the numeric columns
+# from the data dataset, because I think once
+# I do that I will be able to do the pairs() function:
+
+num_cols <- unlist(lapply(data, is.numeric))
+
+# Now going to use this "logical vector" to take a subset 
+# of our data frame:
+
+data_num <- data[, num_cols]
+
+# this produces a subset of the data that is only 
+# columns that are numerical/integer observations
+
+# Now I will see if I can do the pairs function
+# with this subsetted numerical/integer only dataset
+
+# first I will check that the data_num data
+# is a data frame using the frame() function
+
+is.data.frame(data_num)
+
+#this returns "true", so the data is a data.frame, theoretically
+# then, I should be able to do the pairs function on it
+
+# just workings: dev.off()
+# just workings: pairs(data_num) #this is huge/not very useful, trying below:
+
+install.packages("psych")
+library(psych)
+
+cor.plot(Filter(is.numeric, data)) #great, produces correlation plot of the data
+
+# Alternatively, we might take a subset of columns and use pairs() to
+# visualise the correlations.
+
+pairs(data[c("AdjSalePrice", "LandVal", "ImpsVal", "SqFtLot")],
+      upper.panel = NULL) 
+#this is a better production of pairs plot - use this type of 
+#subset to produce more manageable pairs - also, the 
+#cor.plot data is great to visualise, only thing is need
+#to be able to see all of the labels on the axes.
 
 
+##### Week 2 of Project:
