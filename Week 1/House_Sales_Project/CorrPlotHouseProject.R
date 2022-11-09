@@ -46,7 +46,6 @@ is.data.frame(data_num)
 install.packages("psych")
 library(psych)
 
-
 cor.plot(Filter(is.numeric, data)) #great, produces correlation plot of the data
 
 # Alternatively, we might take a subset of columns and use pairs() to
@@ -84,4 +83,8 @@ stargazer(mod2, type = "text", title = "Adj Sale Price and Bathrooms")
 #this produces a table in the console, but would be better to get it
 # in as an html
 
+mod2BathroomsLandVal <- lm(AdjSalePrice ~ Bathrooms + LandVal, data = dat)
+dat_add <- augment(mod2)
+stargazer(mod2, type = "text", title = "Adj Sale Price and Bathrooms")
 
+ggplot(dat, aes(Bathrooms, AdjSalePrice, group))
