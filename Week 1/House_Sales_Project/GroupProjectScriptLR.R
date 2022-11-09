@@ -13,11 +13,6 @@ summary(data)
 head(data)
 list(data)
 
-install.packages("dplyr")
-
-?pairs()
-
-
 str(data)
 
 # I am going to extract just the numeric columns
@@ -51,6 +46,7 @@ is.data.frame(data_num)
 install.packages("psych")
 library(psych)
 
+
 cor.plot(Filter(is.numeric, data)) #great, produces correlation plot of the data
 
 # Alternatively, we might take a subset of columns and use pairs() to
@@ -65,3 +61,6 @@ pairs(data[c("AdjSalePrice", "LandVal", "ImpsVal", "SqFtLot")],
 
 
 ##### Week 2 of Project:
+dat <- readRDS("data/train.rds")
+
+summary(dat)
