@@ -85,3 +85,10 @@ stargazer(mod2, type = "text", title = "Adj Sale Price and Bathrooms")
 # in as an html
 
 
+###########
+#Week 3###
+###########
+
+bld
+
+
