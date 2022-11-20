@@ -34,6 +34,75 @@ boxplot(dat$YrBuilt, dat$AdjSalePrice)
 #Week 3###
 ###########
 
-bld
+# ruari found blggrade, bathrooms, sq ft adn two others had effect on predictability
+
+# today: transform zipcode into usable categorical variable
+
+# multivariate
+summary(
+  lm(dat$AdjSalePrice ~ dat$Bathrooms + dat$BldgGrade + dat$SqFtTotLiving))
+brblsqrlm <- lm(dat$AdjSalePrice ~ dat$Bathrooms + dat$BldgGrade + dat$SqFtTotLiving)
+mvlm.resid <- -resid(brblsqrlm)
+
+summary(brblsqrlm)
+
+summary(mvlm.resid)
+
+install.packages("dplyr")
+library(dplyr)
+install.packages("stargazer")
+library(stargazer)
+install.packages("broom")
+library(broom)
+
+?group_by()
+
+#trying to sort this code
+
+zip_group <- as.data.frame(mvlm.resid) %>%
+  group_by(mvlm.resid) %>%
+  summarise(resids = (mvlm.resid),
+            count = n()) %>%
+  arrange(resids) %>%
+  mutate(cumul_count = cumsum(count),
+         mvlm.resid = ntile(cumul_count, 5))
+
+summary(zip_group)
 
 
+###Martyn's code:
+zip_group <- dat %>%
+  group_by(ZipCode) %>%
+  summarise(med_price = median(AdjSalePrice),
+            count = n()) %>%
+  arrange(med_price) %>%
+  mutate(cumul_count = cumsum(count),
+         ZipGroup = ntile(cumul_count, 5))
+
+
+
+dat <- dat %>%
+  left_join(select(zip_group, ZipCode, ZipGroup), by = "ZipCode")
+
+mod4 <- lm(AdjSalePrice ~ SqFtTotLiving + BldgGrade + ZipGroup, data = dat)
+
+
+
+# continue
+zip_group_residuals <- mod4 %>%
+  group_by(resids) %>%
+  summarise(med_price = median(residuals),
+            count = n()) %>%
+  arrange(med_price) %>%
+  mutate(cumul_count = cumsum(count),
+         residuals = ntile(cumul_count, 5))
+
+rlang::last_error()
+
+# martyn infout - problem is resids is lm3.resid, we created object for resids as one vector,
+# comes from our best model, need to bind it to dataset using cbind (to our dataset), then go 
+# from there
+#cbind line in there the og data set 
+
+
+dat_with_residuals <- cbind(dat, residuals = mvlm.resid)
