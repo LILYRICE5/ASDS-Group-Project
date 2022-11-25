@@ -106,3 +106,5 @@ rlang::last_error()
 
 
 dat_with_residuals <- cbind(dat, residuals = mvlm.resid)
+
+
